@@ -1,0 +1,159 @@
+Commands to remember:
+pwd, cd, ls, rm, mv, cp, rmdir, mkdir, top, htop, w, netstat (-tupln, -a, -ie), gedit, vi (vim), emacs (programming), nano (basic), less: display text one page at a time
+
+Any program/ process running has 3 channels:
+0. Standard Input STDIN (keyboard, file, network...) --> 0
+1. Standard Output STDOUT (shell) --> 1
+2. Standard error STDERR --> 2
+
+| pipe function: feeds output from function on left to function on right
+[0,1,2] > redirect STDOUT/STDERR: writes output from function into a file
+[0,1,2]>> redirect STDOUT/STDERR: appends output into the file
+< redirect input into function: sends information from file to function.
+&& and: if program on left works, run right.
+Useful sequences:
+- cat file.txt | cut -d<char to cut at> -f2 <field 2>
+- cat file.txt | sort -bf     (sort by first alphabet)
+- cat file.txt | uniq         (unique lines)
+- wc file.txt                 (word count)
+- cat file.txt | grep <regex> (search for word patterns LEARN THIS)
+
+Updating and Installing Packages: sudo apt-get update/upgrade/install/remove
+- need to be super user to do some tasks --> sudo
+Looking for packages: apt-cache search <regex>
+There are private repositories that can be installed if they are trusted source
+List installed packages: apt list <optinal: name>
+
+File Permissions
+(d)(rwx)(r-x)(r-x)
+Read, write and execute for owner, group and others
+chmod <7:rwx, 6:rw, 5:rx, 4:r, 3:wx, 2:w, 1:x, 0:none><1-7><1-7> <file/dir>
+Change default permissions: home/user/etc/login.defs --> search "umask"
+chown <owner>:<group> <file/dir>
+To fully understand, need to learn binary and octo representation
+
+Basic Linux Access Control
+Everything in linux is an object(files, processes etc). Objects have owners and the root user owns everything. 
+- User that creates an object is the owner and the object has same rights as user, including all the processes the process spawns
+- Some tasks require admin prvilleges aka root 
+
+User Account Management
+To login to sudo: sudo -i
+Location for users: /etc/passwd
+There exists service accounts that cannot be logged in for specific processes
+Format<User:Password (/etc/shadow):UID:GrpID:UserInfo:Home Dir:Default Shell>
+Each user is a potential loophole for a bad person to exploit.
+- Users are disabled when their password field in shadow is * or ! before the password
+Commands: useradd (-m, -d, -s, -u, -g), userdel (their home dir is not deleted), passwd <user>, usermod -L, newusers
+Default files in home folder when creating new user is in /etc/skel
+
+Processes Overview
+Process: a general term for the steps/ application getting tasks done
+- e.g. browsers, commands
+- ps aux shows all current processes
+2 Phases for a process
+Address Phase: physical address to write stuff to (RAM) allocated by kernal
+Kernal data structures: the information allocated to the process by kernal
+- UID: user id; which user owns the process
+- EUID: effective uid; gives process permissions of another user
+- Niceness: does this process hog resources (higher number less priority).
+- Access information for virtual memory address, file access, network ports and signal mask.
+Each process has a process id (PID) which is unique.
+- PID 1 is always init: runs bootup script
+- Each process is spawned by a parent. If parent process died, it is redirected to init.
+SUMMARY: All processes except init is created by a parent process using forking(cloning) and child processes go on to fork, creating more processes. Init is started by the kernal on boot. Ubuntu's init process is upstart. Upon death, processes have a system call exit with a value.
+
+Process Signals
+How processes communicate with each other (Kernal --> Processes, Processes --> Processes)
+Uses: send from kernal to process when smth bad happens, notify parent process that child process has died, inform that a cdrom drive is ready...
+Processes are coded to do certain things when a signal is received, like terminate upon termination signal. 
+command: kill <signal num> <PID> sends signals to processes
+- killall (all processes)
+- pkill (processes started by person)
+- pgrep
+- man 7 signal
+
+Process State, Niceness and Monitoring Processes
+All processes want CPU time. Kernal schedules this CPU time.
+4 Process States:
+1. Runnable - elligible for CPU time and has all required inputs
+2. Sleeping - waiting for something like an input
+3. Zombie - done and waiting to return output and be killed
+4. Stopped - stopped due to other processes or a terminal command
+Htop is a good function to monitor these processes.
+- send signals to specific processes (F9)
+- edit niceness
+Niceness ranges from -20 to 19 in Linux
+- command: nice/renice  -n <-20 - 19>
+- -20 being most important and 19 being least impt
+As a system admin, if the pc is running really slow, you can open up top/htop and check for whats eating up all the cpu and whether there are lots of zombie precesses etc...
+
+/proc Filesystem
+Virtual filesystem containing state of processes.
+Inside of proc, dirs are named with PIDs.
+Usual dirs in procs:
+- cmd: command currently being executed
+- cmdline: command line of the process
+- cwd: link to where process is currently operating from
+- environ: show environment variables
+- maps: memory mapping information
+- statm: memory
+All these information are read by functions like htop and top to present human readable informatin to the user.
+command: strace - look deep into a process (should learn for sys admin)
+
+Filesystem and Abs/Relative Filesystem
+File systems deal with where to store files, how to refer to files, accidental file deletion, corruption...
+We deal with the file APIs which has 1 layer of abstraction above file systems
+- API is the language we use to deal with the file system
+Linux runs everything through the file system. Things like cdroms have a dir inside of /dev. All the memory and harddrive communicates with the kernel through the file system, where a file represents these things. Inter-process communication like network sockets and internet traffic all go through the file system too by reading to and writing from files.
+Udevd is a process that automatically detects new hardwares and searches for the firmware to install so now everything is automatic.
+command: df -ah searches for file systems disk space usage
+Absolute Paths - starts with / (root): safer to use abs path in scripts
+Relative Path - depends on where you are in the system
+
+Filesystem Layout Overview (Filesystem Hierachy Standard)
+There are set places to place certain file systems and these rules have grown organically over the years.
+Most common files to work with:
+- /etc: config data for applications, user facing system tools config
+- /sbin: system binaries; execuables for root user
+- /bin: executables for regular user, many of which are links to actual files (e.g. cat, rm, echo)
+- /tmp: temporary file; cleaned up upon restart
+- /home: user's home folders
+- /root: root's home folder
+- /lib64: for 64 bit systems, shared libraries req to boot the system
+command: man hier - gives info on these files
+Troubleshooting: Check process to see if its running --> check config file inside of /etc
+
+Filesystem Layout
+- bin: binaries that come with install. Manu come from Gnu.
+- boot: kernal and boot loader
+- dev: devices (sd(disk)(partition) is harddisk)
+- etc: config files for everything on the systen (installed packages and boot)
+- home: home dir for users that are not root
+- lib: libraries that all programs on the system uses
+- media: automounted stuff like usb and cdrom as usually only root can mount stuff (unique to ubuntu)
+- mnt: on most systems this is where mounted stuff goes
+- opt: optinal software not installed through software manager (make link from bin to here)
+- proc: virtual file system containing information for each process
+- root: root's home
+- sbin: critical files that machine needs to run (usually never modify this)
+- tmp: temporary file which gets cleaned on restart (like partial downloads)
+- usr: not very essential list of files and commands
+- var: various
+- var/log: system log
+
+Linux File Types Explained
+(file type)rw-rw-r--
+7 main file types:
+-: normal file of bytes
+l: symbolic link or soft link
+d: directories which are references to files
+b: block device files - stuff that stores information like harddisks (the place where the driver on Linux communicates with hardware)
+c: character device files, mouses and keyboards (/dev/input/)
+s: local socket file (not commonly used)
+p: named pipe (not commonly used)
+A dir is a reference to other files and dirs. It contains information about files.
+Block device files have a buffering space in the kernal while character devices take care of the buffering themselves.
+A socket is a private file for communication between 2 processes. 
+A symbolic link is a link to a file from anywhere. It is a file that stores pointer information to another file. Basically a pointer from C.
+A hard link is a reference to an existing file, meanning it is just creating another name for an existing inode.

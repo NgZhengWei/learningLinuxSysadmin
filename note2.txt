@@ -1,0 +1,50 @@
+Scheduling Tasks with Cron
+commands:
+- crontab -l : list scheduled tasks
+- crontab -e : edit crontab
+15    10   1-10/2    *  3-5   echo "$(date): checking in" >> /var/log/mycheckin
+(min)(hr) (dom)(moy)(wd)  (cmd)
+- , creates a list, / creates every unit (/2 means every 2 days), - is an interval and * means everything
+- note that the dates are greedy, meaning they run when either of the dates or day of month is true, not and
+Kept inside dir: /var/spool/cron/crontabs/user
+/etc/cron.d is a dir for packages to install package specific schedule jobs to prevent package specific schedule jobs
+/etc/crontab : the system wide crontab
+Creating /etc/cron.allow creates a whitelist of users who are allowed to run cron as bad guys can install a cron process to fetch malware everyday in cron
+After login as root, use crontab -e -u <user> to edit a user's crontab, say someone installed malware on the user's crontab
+
+8 Bash Shortcuts Every Linux User Should Know
+1. Ctrl C stops a running command
+2. Ctrl D exits current shell session
+3. Tab Completion
+4. Ctrl L clears terminal
+5. Ctrl A moves to start of line in terminal and Ctrl E to go to end
+6. Alt F moves forward by a word and Alt B goes back a word(ctrl arrow keys work too)
+7. Ctrl R for reverse search in history of bash commands (to pull up all history, type in history)
+8. Ctrl G brings you back to what you were typing while Ctrl C erases everything
+Where to Find Answers to Technical Questions
+How To Ask Smart Questions --> http://www.catb.org/esr/faqs/smart-questions.htmlServerfault.com --> most questions answered for beginner sys admin
+unix.stackexchange.com --> Linux and Unix
+stackoverflow.com --> development related stuff (scripting and automating)
+ietf.org/standards/rfcs/ --> request for comment(RFCs) from the Internet Engineering Task Force (IETF)
+faqs.org --> easy search for RFCs to get deep understanding of internet related stuffs (read on tcp, ips and internet mails)
+linux man pages --> manual pages for commands for small problems (different sections exist and by default man 8 is pulled up which is superuser and sys admin)
+freebsd.org --> bsd man pages is more beginner friendly than linux ones from kernal.org
+
+Sysadmin Book Review Networking for Systems Administrators by Michael W Lucas
+- 80% of problems faced as a beginner system administrator
+
+Basic tmux Tutorial - Windows, Panes and Sessions over SSH
+Ctrl b states that the next command is for tmux and not for the window
+c: creates new window
+,: renames window
+p: previous window
+n: next window
+w: list windows and select
+%: splits window vertically into 2 panes
+": splits window horizontally
+:: give named commands to tmux (split-window splits horizontally)
+Create a new session: tmux new -s <name of session>
+- immensely useful for SSH into servers as this allows processes to keep running while you logout of the SSH session and close your laptop
+Ctrl b + d: detaches from session but program is still running
+tmux list-sessions: lists sessions
+tmux attach -t <name of session>: reattach to session
