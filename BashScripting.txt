@@ -1,0 +1,38 @@
+Bash Scripting 1 - Why Write Bash Scripts?
+Bash Programming
+Good for light task automation (good rule of thumb is >100 lines, use other languages)
+
+Bash Scripting 2 - Bash Basics
+echo
+> : overwrite (instead of STDOUT)
+>>: append
+< : take input from file (instead of STDIN)
+| : redirect output into another command
+&&: if left script fails, end; if left succeeds, do right script (stops upon a failure)
+||: the or operator. if left script executes, the right won't (stops upon a success)
+
+Bash Scripting 3 - Variables and Quoting
+variables: $<varname> e.g. $a
+- caps are convention for constants
+- set variables with = and no spaces e.g. myvar="Hello xd"
+- convention is underscore_seperated_words
+- {} delimits the varible e.g. echo "This is my ${number}th beer"
+- `` is used to indicate commands inside of strings e.g. echo "there are `wc -l < /etc/group` lines in /etc/group"
+
+Bash Scripting 4 - How Bash Scripts Work
+start file with #!<path to bash> (found using which bash)
+- #! is called a shebang line and is for the kernal to read
+- linux does not care for ending extensions so ending shell scripts in .sh is for humans to distinguish
+- functions and scripts have return values between 0-255 (where 0 is OK)
+- exit <int> determines the return value. If no exit value is given, the exit value of the previous statement is returned. If you mean to do that on puropse do "exit $?"
+Ways to run bash script:
+1. bash <scriptname.sh> or ./<scriptname.sh> : runs script in a new bash
+2. source <scriptname.sh> or . <scsriptname.sh> : runs script in current bash
+- meaning the variables are now accessible in the bash terminal, this is useful to get preset variables in scripts to be accessible in the current terminal
+- however exit statement in script would exit the bash
+
+Bash Scripting 5 - Arguments
+$0 --> filename (more specifically the 0th argument passed to bash)
+$# --> number of arguments passed to script
+$1 ... $n --> the actual arguments passed to script
+Bash doesn't throw an error for an undefined variable

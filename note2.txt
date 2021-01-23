@@ -48,3 +48,20 @@ Create a new session: tmux new -s <name of session>
 Ctrl b + d: detaches from session but program is still running
 tmux list-sessions: lists sessions
 tmux attach -t <name of session>: reattach to session
+
+tmux Shared Sessions
+SSH into the server using the same user and start a session where the other person can just join the session normally.
+
+Compression and Archiving on Linux - Basic tar Commands
+Archiving is when you convert a tree of dir into a single locigal file
+- useful for ftp but its really bad
+Compression is when you use algorithms to look for repeated patterns to save space; make files smaller
+Command to archive and zip: tar -zcvf docs.tar.gz <document name>
+- f is the last option as the filename follows it
+- v is for verbose: print a line for each file archived (leave out on remote machines as it can take forever to output)
+- c is to create a new archive
+- z is to call the gzip program to compress the archive
+- .tar.gz is a naming convention to let others know how to unarchive and unzip
+- when compressing and archiving, do it while sitting in the above dir else you will create a tarbomb if done with ../tarbomb.tar.gz .
+Command to unarchive and unzip: tar -zxf <filename>
+- to be safe, can uncompress inside of a decompress_chamber dir
