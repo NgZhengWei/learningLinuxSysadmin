@@ -1,0 +1,50 @@
+Everything You Need to Know About $PATH in Bash
+A colon seperated list of dir which bash goes through to check for binary sequentially
+When a command is given, bash looks through the dirs in the path sequentially and executes the script once it finds it
+- command: which <command> tells you the dir the command is found in
+- appending to $PATH: PATH=$PATH:<path to dir> OR PATH=<path to dir>:$PATH (prepending so new dir gets searched first)
+- full paths should be used inside of scripts because paths can be edited and you could unintentionally run an evil script as sudo
+To edit $PATH var on startup of bash everytime, go to /home/user/.profile
+Path is originally set at /etc/profile and /etc/profile.d/ before the user's .profile file
+Real life use-case:
+If path needs to be changed for one user, do it in the home dir /home/user/.profile
+For root user its in /root
+To change all users excpet for root, do it in /etc/profile
+System wide $PATH is found in /etc/environment
+
+The Linux 'script' Command: Record Your Shell Sessions
+Start the script session using 'script' and end using 'exit' or Ctrl d
+- command: script <filename>
+- used to prove you've done something
+- record hard to produce results
+- option: --timing=time.log : keep the timing log
+- command: scriptreplay -s <script.log file> -t time.log
+- command: script -c 'command' <filename> (inputs a single command and log the output)
+
+Linux Shell Aliases: What you need to know
+command: alias <alias name>="<command>" - to add a new alias
+command: alias - to list all alias
+command: unalias <alias command> - unalias command
+Unique commands to shorten long repetitive commands you always use
+Also used for shadowing, which is overwriting other commands
+~/.bashrc is the config file for bash and is ran everytime bash starts
+- add alias to ~/.bashrc if you want alias to be permanent
+
+8 Basic Isof Commands Every Sysadmin Needs to Know
+Get relation between process and file system
+- which process have a specific file open (isof <filepath>)
+- which file a specific file has open (isof -p <PID>)
+- debug certain problems happening on file systems
+- check what users are doing on the file systems (-u <user>)
+- look for the binary or log file for a specific program (grep <bin/.so/ log>)
+- check whats going on with the network socket (-i <port>/<tcp/udp>)
+Good for looking for specific files of processes that are running
+Usually you are looking for the command, PID and path
+command: lsof - list open files
+command: lsof <path to file> - returns processes which have that file open
+- e.g. look for processes which are still operation on outdated files
+command: lsof -p <PID> -lists files that a program has open
+command: lsof -u <user> - see what programs a user has open
+command: lsof <PID> | grep .so - look for shared libraries the proc has open
+command: lsof <PID> | grep log - look for log that the program is writing to
+command: lsof -i :<port number> OR <tcp/udp>

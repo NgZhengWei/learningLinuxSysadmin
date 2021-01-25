@@ -1,0 +1,29 @@
+Which files are open?
+lsof
+
+Which processes have this file open?
+lsof /var/log/nginx-error.log
+
+Which files does process X have open?
+lsof -p 1
+lsof -p `pgrep ABC`
+
+Where is the binary for this process?
+lsof -p ABC | grep bin
+
+Which shared libraries is this program using? (manually upgrading software, i.e. openssl)
+lsof -p PID | grep .so
+
+Where is this thing logging to?
+lsof -p ABC | grep log
+
+Which processes still have this old library open?
+lsof grep libname.so
+
+Which files does user XYZ have open?
+lsof -u XYZ
+lsof -u XYZ -i # network only
+
+Which process is listening on Port X (or using Protocol Y)?
+lsof -i :80
+lsof -i tcp

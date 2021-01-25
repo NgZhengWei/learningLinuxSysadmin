@@ -36,3 +36,33 @@ $0 --> filename (more specifically the 0th argument passed to bash)
 $# --> number of arguments passed to script
 $1 ... $n --> the actual arguments passed to script
 Bash doesn't throw an error for an undefined variable
+
+Bash Scripting 6 - 'If' and Testing Explained
+if [[ condition ]]; then
+	#statements
+elif [ condition ]; then
+	#statements
+else
+	#statements
+fi
+- Double square brackets is the new test syntax while single is old test. For portability, writing in old test syntax might be good depending on use case.
+- in old test, comparism operator for strings is = and !=
+"-z" tests for zero length strings/ null
+"-n" tests for not null
+For equality testing for int: -eq, -ne, -gt, -lt (old syntax; new syntax uses equal signs as per norm)
+Arithmetic expressions: $((1 + 1))
+
+Bash Scripting 7 - Functions and Course Review
+$@ is an array of arguments passed into the script
+for <var> in <arr>; do
+	expression...
+done
+Bash quoting rules:
+- "" preserves most of the character's meaning (weak quoting) and "$var" prevents word splitting
+- '' removes all special meaning from characters
+- $'' follows ASCII rules where \n and \t apply
+Command: set
+- sets value of shell option and positional parameters
+- displays all variables and functions available in locality
+
+Note: Bash is rarely used in production and is only useful for small scripts. Anything with complexity should be written in another more sopisticated programming language like Python.
