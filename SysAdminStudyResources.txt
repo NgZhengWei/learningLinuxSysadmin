@@ -1,0 +1,20 @@
+Resources for Becoming a Linux System Administrator
+- No 1 book or course can cover all the knowledge.
+
+Books:
+- UNIX and Linux System Administration Handbook by Evi Nemeth
+- The Practice of System and Network Administration by Thomas A. Limoncelli
+
+Links:
+- help.ubuntu.com/community/Servers (work through these guides as practice)
+- serverfault.com (forum for questoins on servers)
+- news.ycombinator.com (Hacker News - more on development and startup)
+
+On Programming:
+- Structure and Interpretation of Computer Programs (MIT ELectrical Engineering and Computer Science) by Harold Abelson
+- MIT OpenCourseWare
+- The Little Schemer by Daniel P. Friedman (introductory book)
+- stackoverflow.com (forum)
+
+Community:
+reddit

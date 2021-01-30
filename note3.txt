@@ -48,3 +48,58 @@ command: lsof -u <user> - see what programs a user has open
 command: lsof <PID> | grep .so - look for shared libraries the proc has open
 command: lsof <PID> | grep log - look for log that the program is writing to
 command: lsof -i :<port number> OR <tcp/udp>
+
+Monitoring Linux Systems and Services with Monit
+Monitor system stats and application stats
+- CPU
+- Port 80 http
+- Port 3306 mysql (memory usage)
+- php-fpm and ngix processes
+- site-specific monitoring config files in /etc/monit/monit.d/sitename.cfg
+- Web interface (local forwarding with SSH)
+- Email alerts
+Monit config file: /etc/monit/monitrc
+New location for monit.d is likely conf-available
+Monit is set up on port 2812 by default as in /etc/monit/monitrc, you set httpd to port 2812. 
+- if you try to send a http req to 127.0.0.1:2812, you get 401 unauthorised as password and username was not supplied but this shows that the service is up and running
+- netstat -tupln shows that monit is indeed listening on port 2812
+- SSH can be used to create a direct tunnel to access the monit port instead as we set it up such that it is not accessible by a random on the internet with the command "allow username:password". The command is "ssh -L 1234:localhost:2812 remoteuser@remotehost.net"
+***Skipping monit because I dont understand many things, I'll come back to it laterz***
+
+Service Management with systemd
+Systemd is the modern init service.
+systemctl: manages services (older linux systems: service mysql status)
+- systemctl status  mysql (gets status)
+- systemctl start   nginx php4-fpm monit (starts in current session)
+- systemctl stop    <service> (stops in current session)
+- systemctl enable  mysql nginx php5-fpm monit (start at boot time)
+- systemctl disable <service> (disables at boot)
+- systemctl reload  <service> (re-read program config files)
+- systemctl restart <service> (kill process and start it again, re-reading the config files)
+journalctl: manages logs
+- journalctl -xn (add explanation where available and show n lines)
+- journalctl -u <unit/ service> (get log entries from a specific service)
+- journalctl -b (boot log)
+- journalctl -f (follow the journal)
+- journalctl --since "10 min ago" (show entries not older than date) 
+
+What Every Sysadmin Needs to Know About Tech Debt
+A universal issue to understamd
+- costing company money
+- garner respect amd have less "nightmare projects"
+- good interview question to test seniority of canidate
+It is the consequence of decisions. E.g. reducing features to save time on dev but has to be paid back later
+- undocumented code
+- projects missing component (security, automation, config management, repeatability)
+- snowflake servers
+- Things no one understands anymore
+Costs you when you need to: add features, do maintenance, train and estimates
+Paying off technical debt:
+- ticketing system
+- one day per week
+- learn to communicate with business people or managers about it
+- stop being optimistic about estimates
+
+Ansible 2 For Beginners: Linux Automation Course Overview
+Uses: Provisioning, Configuration Management, Deployment, Orchestration and Part of Continuous Deployment
+He has a course on this: https://www.packtpub.com/product/ansible-2-for-beginners-video/9781786465719

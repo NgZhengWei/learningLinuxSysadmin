@@ -1,0 +1,15 @@
+ISPs can collect and sell your information without consent or informing you.
+
+Virtual Private Networks
+- connect 2 networks together using an encrypted tunnel via the internet
+
+Sites without https allows your ISP or anyone to monitor the traffic and see exactly what you're doing.
+- with https, they can tell which websites you're visiting but not the pages.
+
+With a VPN, the ISP can only see the VPN server and not the content on the otherside.
+- the VPN is like the courier who carries your mail while no VPN is like going to the location physically
+- this is known as proxy in networking
+
+ISPs also slow down certain content in favor of others and might dial down your internet speed just to deal with their net traffic.
+
+Take note to force dns traffic through the VPN tunnel too as dns lookups will expose the websites you visit too.
